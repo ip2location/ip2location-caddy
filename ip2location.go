@@ -13,14 +13,30 @@ func init() {
 	caddy.RegisterModule(IP2LocationCaddy{})
 }
 
+// IP2Location is a Caddy HTTP handler that detects the visitor IP address,
+// looks up geolocation data using either a local IP2Location BIN database
+// or the IP2Location.io API, then injects the result as request headers
+// for upstream handlers such as reverse_proxy or php_fastcgi.
 type IP2LocationCaddy struct {
-	Mode         string `json:"mode,omitempty"`     // local or remote
-	BinPath      string `json:"bin_path,omitempty"` // local BIN path
-	APIKey       string `json:"api_key,omitempty"`  // IP2Location.io API key
-	APIURL       string
-	HeaderPrefix string `json:"header_prefix,omitempty"` // e.g. X-IP2Location
-	db           *ip2location.DB
-	api          *ip2locationio.IPGeolocation
+	// Mode specifies the lookup method.
+	// Valid values are "local" for BIN database lookup or "remote" for API lookup.
+	Mode string `json:"mode,omitempty"`
+
+	// BinPath is the filesystem path to the IP2Location BIN database.
+	// Required when mode is "local".
+	BinPath string `json:"bin_path,omitempty"`
+
+	// APIKey is the IP2Location.io API key.
+	// Required when mode is "remote".
+	APIKey string `json:"api_key,omitempty"`
+
+	// HeaderPrefix is the prefix used for injected headers.
+	// Defaults to "X-IP2Location".
+	HeaderPrefix string `json:"header_prefix,omitempty"`
+
+	APIURL string
+	db     *ip2location.DB
+	api    *ip2locationio.IPGeolocation
 }
 
 func (IP2LocationCaddy) CaddyModule() caddy.ModuleInfo {
