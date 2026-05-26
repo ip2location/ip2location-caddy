@@ -1,0 +1,25 @@
+{
+    # Globally instruct Caddy to run your plugin before it processes FastCGI
+    order ip2location before php_fastcgi
+}
+
+example.com {
+    # Set the root folder where your PHP files (like index.php) live 
+    root * /var/www/html
+
+    # 1. First, look up the IP and inject the geolocation headers
+    ip2location {
+        mode local
+        bin_path /path/to/IPV6-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE-ZIPCODE-TIMEZONE-ISP-DOMAIN-NETSPEED-AREACODE-WEATHER-MOBILE-ELEVATION-USAGETYPE-ADDRESSTYPE-CATEGORY-DISTRICT-ASN.BIN
+        # mode remote
+        # api_key <YOUR_API_KEY>
+        header_prefix X-IP2Location
+    }
+
+    # 2. Then, pass the request (with headers included) to PHP-FPM
+    # (Adjust the path to your actual php-fpm socket or use 127.0.0.1:9000)
+    php_fastcgi unix//run/php/php8.4-fpm.sock
+
+    # 3. Serve static files (images, CSS, JS) directly if they exist
+    file_server
+}
