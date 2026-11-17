@@ -248,7 +248,7 @@ ASN lookup is useful for network troubleshooting, traffic analytics, and investi
 | [IP2Proxy](https://www.ip2location.com/database/proxy) | IP proxy, VPN, TOR, and anonymizer intelligence. |
 | [IP2WHOIS](https://www.ip2whois.com/) | Domain WHOIS lookup services. |
 
-## Support
+## Documentation and Support
 
 - [IP2Location.io API documentation](https://www.ip2location.io/ip2location-documentation)
 - [Report issues and request features](https://github.com/ip2location/ip2location-caddy/issues)
